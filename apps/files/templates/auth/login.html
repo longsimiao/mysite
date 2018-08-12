@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}
+    Ferras - LogIn
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid p-0">
+
+        <section class="resume-section p-5 p-lg-5 d-flex d-column text-center" id="login">
+            <div class="my-auto">
+                <form method="POST" class="form-horizontal login">{% csrf_token %}
+                    <h3 class="mb-3">Log In</h3>
+                    <div class="form-group text-left">
+                        <i class="fa fa-user fa-lg"></i>
+                        <input class="form-control required" type="text"
+                               placeholder="Username" id="username"
+                               name="username" autofocus="autofocus"
+                               maxlength="20"/>
+                    </div>
+                    <div class="form-group text-left">
+                        <i class="fa fa-lock fa-lg"></i>
+                        <input class="form-control required" type="password"
+                               placeholder="Password" id="password"
+                               name="password" maxlength="20"/>
+                    </div>
+                    <div class="form-group pull-right">
+                        <label class="checkbox">
+                            <input type="checkbox" name="remember" value="1" id="remember_me"/>Remember Me
+                        </label>
+                    </div>
+                    <div class="form-group text-left">
+                        <button type="submit" class="btn btn-success"
+                                name="submit" value="login">Log In
+                        </button>
+                    </div>
+                </form>
+
+            </div>
+        </section>
+    </div>
+
+{% endblock %}

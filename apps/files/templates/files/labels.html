@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load markdown_deux_tags %}
+
+{% block title %}
+    Ferras - 文章分类
+{% endblock %}
+
+{% block navbar %}
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top" id="sideNav">
+        <a class="navbar-brand js-scroll-trigger" href="/#page-top">
+            <span class="d-block d-lg-none">Ferras</span>
+            <span class="d-none d-lg-block">
+          <img class="img-fluid img-profile rounded-circle mx-auto mb-2" src="{% static 'img/site.jpg' %}" alt="">
+        </span>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link js-scroll-trigger" href="/special/lists">Category</a>
+                </li>
+                {% for label in labels %}
+                    <li class="nav-item {% if slug == label.label %}active{% endif %}">
+                        <a class="nav-link js-scroll-trigger" id="nav-python"
+                           href="/special/lists/{{ label.label | lower }}">{{ label.label }}</a>
+                    </li>
+                {% endfor %}
+                <li class="nav-item">
+                    <a class="nav-link js-scroll-trigger" href="/">Home</a>
+                </li>
+                {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link js-scroll-trigger" href="/chi" target="_blank">Admin</a>
+                        <a class="nav-link js-scroll-trigger" href="/logout">Logout</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link js-scroll-trigger" href="/login">Ferras</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid p-0">
+
+        <section class="resume-section p-3 p-lg-5 d-flex flex-column" id="python">
+            <div class="my-auto">
+                <h2 class="mb-5">{{ slug }}</h2>
+                <div class="resume-item d-flex flex-column flex-md-row mb-2">
+                    <div class="resume-content mr-auto">
+                        <ul>
+                            {% if articles %}
+                                {% for article in articles %}
+                                    <li class="mb-3">
+                                        <a href="/blog/lists/{{ slug | lower }}/detail?bid={{ article.id }}">{{ article.title }}</a>
+                                    </li>
+                                    <p>{{ article.excerpt | markdown }}</p>
+                                {% endfor %}
+                            {% else %}
+                                <h3 class="text-warning mb-5">No posts here yet!</h3>
+                            {% endif %}
+                            <div class="pagination">
+                                {% if articles.has_previous %}
+                                    <a href="?page={{ articles.previous_page_number }}">Previous</a>
+                                {% endif %}
+                                <span class="current">
+                        Page {{ articles.number }} / Total {{ articles.paginator.num_pages }}
+                    </span>
+                                {% if articles.has_next %}
+                                    <a href="?page={{ articles.next_page_number }}">Next</a>
+                                {% endif %}
+                            </div>
+
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+
+    </div>
+
+{% endblock %}
